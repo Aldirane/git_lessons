@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Обратная связь</title>
+    <style>
+        .form_checkbox {
+        
+        flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+<?php if (isset($question_not_created)) : ?>
+    <div class="alert alert-danger" role="alert">
+        Вопрос не создан!
+    </div>
+<?php endif; ?>    
+<?php if (isset($question_created)) : ?>
+    <div class="alert alert-success" role="alert">
+        Вопрос успешно задан!
+    </div>
+<?php endif; ?>
+<div class="container">
+    <div class="offset-md-4 col-sm-6">
+        <form method="post" action="ask.php" name="register">
+            <div class="form-group row">
+                <?php if (isset($user_idErr)) : ?>
+                    <div class="alert alert-danger" role="alert">
+                        <p>Авторизуйтесь для отправки формы</p>
+                        <a class="btn btn-primary" href="auth.php">Авторизация</a>
+                    </div>
+                <?php else: ?>
+                    <?php if (isset($user_id)) : ?>
+                        <div>
+                            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                            <label for="user_name">Пользователь: </label>
+                            <input type="text" name="user_name" id="user_name" value="<?php echo $_POST['user_name']; ?>" readonly>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </div>
+            <p>Форма обратной связи</p>
+            <div class="form-group">
+                <label for="theme">Выберите тему вопроса:</label>
+                
+                <select class="custom-select" style="width: 150px;" name="theme" id="theme">
+                    <option value="">Выбрать</option>
+                    <option value="database">Базы данных</option>
+                    <option value="server">Сервер</option>
+                    <option value="php">PHP</option>
+                    <option value="other">Другое</option>
+                </select>
+                <span class="error">* 
+                    <?php if (isset($themeErr)) {
+                        echo $themeErr; }
+                        ?></span>
+            </div>
+            <p>На каком вы курсе:</p>
+            <div class="form-group">
+                <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="start" name="course" value="starter" class="custom-control-input"  required>
+                        <label class="custom-control-label" for="start">Начальный</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="advance" name="course" value="advanced" class="custom-control-input">
+                        <label class="custom-control-label" for="advance">Продвинутый</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="pro" name="course" value="pro" class="custom-control-input">
+                        <label class="custom-control-label" for="pro">Профи</label>
+                </div>
+                <span class="error">* 
+                    <?php if (isset($courseErr)) {
+                        echo $courseErr; }
+                        ?></span>
+            </div>
+            <div class="form-group">
+                <label for="problem">Опишите проблему</label>
+                <br>
+                <input type="text" style="width: 350px;" id="problem" name="problem" required>
+                <span class="error">* 
+                    <?php if (isset($problemErr)) {
+                        echo $problemErr; }
+                        ?></span>
+            </div>
+            <div class="form-group">
+                <textarea name="about" cols="45" rows="5">Напишите свой вопрос...</textarea>
+                <?php if (isset($aboutErr)) {
+                    echo $aboutErr; }
+                    ?></span>
+            </div>
+            <div class="form-group">
+                <div class="custom-file">
+                    <label style="width: 350px;" for="userfile">Выберите файл с расширением: .doc, .docx, .jpg, .jpeg, .png, .pdf</label>
+                    <input type="file" class="form-control-file" accept=".doc, .docx, .jpg, .jpeg, .png, .pdf" id ="file" name="userfile">
+                    </div>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-secondary" type="reset" value="Сбросить">
+                <input class="btn btn-success" type="submit" value="Подтвердить">
+                <a class="btn btn-primary" href="answers.php?user_id=<?php if (isset($user_id)) {
+                                                                         echo my_encrypt($user_id); 
+                                                                        } else { 
+                                                                            echo 'auth';
+                                                                        } ?>">Смотреть ответы</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<hr/>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
